@@ -1,0 +1,44 @@
+figma.showUI(__html__);
+
+figma.ui.onmessage = (msg) => {
+    if (msg.type === 'create-table') {
+    //listening on 'Create Table' button pressed
+
+        const arr = [];
+
+        //arr is a 2d array
+        for (let i = 0; i < 10; i++) {
+            arr.push(displayText(i))
+        }
+
+        Promise.all(arr).then((nodes) => {
+            console.log(nodes);
+            const frame = figma.createFrame()
+            frame.layoutMode = 'HORIZONTAL'
+            nodes.forEach((node) => {
+                frame.appendChild(node)
+            })
+            // figma.currentPage.selection = nodes;
+            // figma.viewport.scrollAndZoomIntoView(nodes);
+        })
+        
+
+        figma.ui.postMessage({
+            type: 'create-table',
+            message: msg.items,
+        });
+    }
+}
+
+
+    // figma.closePlugin();
+
+const displayText = async (i) => {
+    const text = figma.createText()
+    text.x = i * 50
+    await figma.loadFontAsync(text.fontName)
+    text.characters = i.toString()
+    text.fontSize = 18
+    text.fills = [{ type: 'SOLID', color: { r: 1, g: 0, b: 0 } }]
+    return text
+}

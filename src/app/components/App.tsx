@@ -2,16 +2,19 @@ import React, {useState, useEffect} from 'react';
 // import '../styles/ui.css';
 
 const App = () => {
-    const [info, setInfo] = useState('');
     const [inputText, setInputText] = useState('');
     const [items, setItems] = useState([]);
-    const [radioState, setRadioState] = useState('tableByRow');
+    const [radioState, setRadioState] = useState('tableByColumn');
+    //returnArray usestate
+    const [returnArray, setReturnArray] = useState([]);
+    const [command, setCommand] = useState('');
 
     useEffect(() => {
         // This is how we read messages sent from the plugin controller
         window.onmessage = (event) => {
             const {type, message} = event.data.pluginMessage;
             if (type === 'create-table') {
+                setReturnArray(message);
                 // setInfo('Message from figma: ' + message.length);
             }
         };
@@ -59,6 +62,27 @@ const App = () => {
         );
     };
 
+    const handleCommand = (input) => {
+        setCommand(input);
+        parent.postMessage(
+            {
+                pluginMessage: {
+                    type: 'command',
+                    command: input,
+                },
+            },
+            '*'
+        );
+    };
+
+    // const getHeaders = () => {
+    //     const temp = [];
+    //     returnArray.map((item) => {
+    //         temp.push(item[0]);
+    //     });
+    //     return temp;
+    // };
+
     return (
         <div>
             {/* <img src={require('../assets/logo.svg')} /> */}
@@ -89,9 +113,14 @@ const App = () => {
                 />
                 <label>by Column</label>
             </div>
-
             <button onClick={onTable}>Create table</button>
-            <p>{info}</p>
+            {/* button set command to all */}
+            <br />
+            Select:
+            <br />
+            <button onClick={() => handleCommand('all')}>All cells</button>
+            <button onClick={() => handleCommand('topHeader')}>Top Header</button>
+            <button onClick={() => handleCommand('sideHeader')}>Side Header</button>
         </div>
     );
 };

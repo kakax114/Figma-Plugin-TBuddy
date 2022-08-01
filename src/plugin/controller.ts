@@ -1,40 +1,83 @@
 figma.showUI(__html__);
 
+//global variables
+var message = null;
+var command = '';
+var input = [
+    [1, 2],
+    [3, 4],
+    [5, 6],
+    [7, 8],
+];
+
 figma.ui.onmessage = (msg) => {
+    if (msg.type === 'command') {
+        command = msg.command;
+        console.log(command);
+        const selection = figma.currentPage.findAll((node) => node.name === 'Cell');
+        if (command === 'all') {
+            figma.currentPage.selection = selection;
+        }
+        if (command === 'sideHeader') {
+            colSelect(selection, input, 0);
+        }
+        if (command === 'topHeader') {
+            rowSelect(selection, input, 0);
+        }
+    }
     if (msg.type === 'create-table') {
         //listening on 'Create Table' button pressed
-        const input = [
-            [1, 2],
-            [3, 4],
-            [5, 6],
-            [7, 8],
-        ];
-        const arr = [];
-        // const input = msg.items
 
-        // console.log(msg.state)
-        if (msg.state === 'tableByRow') {
+        input = msg.items;
+        message = msg;
+        const arr = [];
+
+        if (message.state === 'tableByRow') {
             autoByRow(input, arr);
-            console.log('autobyrow');
-        } else if (msg.state === 'tableByColumn') {
+        } else if (message.state === 'tableByColumn') {
             autoByCol(input, arr);
-            console.log('autobycol');
         }
 
         figma.ui.postMessage({
             type: 'create-table',
-            message: msg.items,
+            message: arr,
         });
     }
 };
 
-const autoByRow = (input, arr) => {
-    const mainFrame = figma.createFrame();
-    mainFrame.layoutMode = 'VERTICAL';
-    mainFrame.counterAxisSizingMode = 'AUTO';
-    getRow(input, arr).forEach((row) => {
-        mainFrame.appendChild(row);
-    });
+const colSelect = (selection, input, number) => {
+    const select = [];
+    if (message.state === 'tableByColumn') {
+        const base = input[number].length;
+        for (let i = 0; i < base; i++) {
+            select.push(selection[number * base + i]);
+        }
+    } else if (message.state === 'tableByRow') {
+        const base = input.length;
+        for (let i = 0; i < base; i++) {
+            select.push(selection[number + i * input[number].length]);
+        }
+    }
+    figma.currentPage.selection = select;
+    // figma.viewport.scrollAndZoomIntoView(select)
+};
+
+const rowSelect = (selection, input, number) => {
+    const select = [];
+    if (message.state === 'tableByColumn') {
+        const base = input.length;
+        for (let i = 0; i < base; i++) {
+            select.push(selection[number + i * input[number].length]);
+        }
+    } else if (message.state === 'tableByRow') {
+        const base = input[number].length;
+        for (let i = 0; i < base; i++) {
+            select.push(selection[number * base + i]);
+        }
+    }
+
+    figma.currentPage.selection = select;
+    // figma.viewport.scrollAndZoomIntoView(select)
 };
 
 const autoByCol = (input, arr) => {
@@ -44,19 +87,7 @@ const autoByCol = (input, arr) => {
     getCol(input, arr).forEach((col) => {
         mainFrame.appendChild(col);
     });
-};
-
-//return a list with frames
-const getRow = (input, row) => {
-    for (let i = 0; i < input.length; i++) {
-        const col = [];
-        for (let j = 0; j < input[i].length; j++) {
-            col.push(getText(input[i][j]));
-        }
-        row.push(getColFirst(col));
-    }
-
-    return row;
+    mainFrame.name = 'Mainframe';
 };
 
 const getCol = (input, col) => {
@@ -70,28 +101,9 @@ const getCol = (input, col) => {
     return col;
 };
 
-//return a frame with some texts
-const getColFirst = (arr) => {
-    const frame = figma.createFrame();
-    Promise.all(arr).then((nodes) => {
-        // console.log(nodes);
-
-        frame.layoutMode = 'HORIZONTAL';
-        nodes.forEach((node) => {
-            frame.appendChild(node);
-        });
-        frame.counterAxisSizingMode = 'AUTO';
-        // figma.currentPage.selection = nodes;
-        // figma.viewport.scrollAndZoomIntoView(nodes);
-    });
-    return frame;
-};
-
 const getRowFirst = (arr) => {
     const frame = figma.createFrame();
     Promise.all(arr).then((nodes) => {
-        // console.log(nodes);
-
         frame.layoutMode = 'VERTICAL';
         nodes.forEach((node) => {
             frame.appendChild(node);
@@ -101,14 +113,59 @@ const getRowFirst = (arr) => {
     return frame;
 };
 
-// figma.closePlugin();
-
-//return a text
 const getText = async (i) => {
+    const cell = figma.createFrame();
+    cell.name = 'Cell';
     const text = figma.createText();
     await figma.loadFontAsync(text.fontName);
     text.characters = i.toString();
-    // text.fontSize = 18
-    text.fills = [{type: 'SOLID', color: {r: 1, g: 0, b: 0}}];
-    return text;
+    cell.appendChild(text);
+    cell.layoutMode = 'HORIZONTAL';
+    if (message.state === 'tableByColumn') {
+        cell.primaryAxisSizingMode = 'FIXED'; //horizontal
+        cell.counterAxisSizingMode = 'AUTO'; //vertical
+        cell.layoutAlign = 'STRETCH';
+    } else if (message.state === 'tableByRow') {
+        cell.primaryAxisSizingMode = 'FIXED'; //horizontal
+        cell.resizeWithoutConstraints(150, 30);
+        cell.counterAxisSizingMode = 'AUTO'; //veritcal
+    }
+    return cell;
 };
+
+const autoByRow = (input, arr) => {
+    const mainFrame = figma.createFrame();
+    mainFrame.layoutMode = 'VERTICAL';
+    mainFrame.counterAxisSizingMode = 'AUTO';
+    getRow(input, arr).forEach((row) => {
+        mainFrame.appendChild(row);
+    });
+    mainFrame.name = 'Mainframe';
+};
+
+// return a list with frames
+const getRow = (input, row) => {
+    for (let i = 0; i < input.length; i++) {
+        const col = [];
+        for (let j = 0; j < input[i].length; j++) {
+            col.push(getText(input[i][j]));
+        }
+        row.push(getColFirst(col));
+    }
+    return row;
+};
+
+// return a frame with some texts
+const getColFirst = (arr) => {
+    const frame = figma.createFrame();
+    Promise.all(arr).then((nodes) => {
+        frame.layoutMode = 'HORIZONTAL';
+        nodes.forEach((node) => {
+            frame.appendChild(node);
+        });
+        frame.counterAxisSizingMode = 'AUTO';
+    });
+    return frame;
+};
+
+// figma.closePlugin();

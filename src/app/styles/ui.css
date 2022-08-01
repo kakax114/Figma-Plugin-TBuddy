@@ -18,20 +18,16 @@ button {
     background: #18a0fb;
     color: white;
 }
-input {
-    border: none;
-    outline: none;
+textarea {
     padding: 8px;
-}
-input:hover {
     box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1);
 }
-button:focus {
+textarea:focus {
     box-shadow: inset 0 0 0 2px #18a0fb;
 }
 #create:focus {
     box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.3);
 }
-input:focus {
+textarea:focus {
     box-shadow: inset 0 0 0 2px #18a0fb;
 }

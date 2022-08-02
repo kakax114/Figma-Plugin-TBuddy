@@ -8,6 +8,7 @@ const App = () => {
     //returnArray usestate
     const [returnArray, setReturnArray] = useState([]);
     const [command, setCommand] = useState('');
+    const [direction, setDirection] = useState(0);
 
     useEffect(() => {
         // This is how we read messages sent from the plugin controller
@@ -62,13 +63,17 @@ const App = () => {
         );
     };
 
-    const handleCommand = (input) => {
+    const handleCommand = (input, move) => {
         setCommand(input);
+        //setdirect is direction plus move
+        setDirection(move);
+
         parent.postMessage(
             {
                 pluginMessage: {
                     type: 'command',
                     command: input,
+                    direction: move,
                 },
             },
             '*'
@@ -118,9 +123,24 @@ const App = () => {
             <br />
             Select:
             <br />
-            <button onClick={() => handleCommand('all')}>All cells</button>
-            <button onClick={() => handleCommand('topHeader')}>Top Header</button>
-            <button onClick={() => handleCommand('sideHeader')}>Side Header</button>
+            <button onClick={() => handleCommand('all', 0)}>All cells</button>
+            <button onClick={() => handleCommand('topHeader', 0)}>Top Header</button>
+            <button onClick={() => handleCommand('sideHeader', 0)}>Side Header</button>
+            {/* if command is topheader, render button up and down */}
+            <br />
+            {command === 'topHeader' && (
+                <>
+                    <button onClick={() => handleCommand(command, direction - 1)}>Up</button>
+                    <button onClick={() => handleCommand(command, direction + 1)}>Down</button>
+                </>
+            )}
+            {/* if command is sideheader, render button left and right */}
+            {command === 'sideHeader' && (
+                <>
+                    <button onClick={() => handleCommand(command, direction - 1)}>Left</button>
+                    <button onClick={() => handleCommand(command, direction + 1)}>Right</button>
+                </>
+            )}
         </div>
     );
 };

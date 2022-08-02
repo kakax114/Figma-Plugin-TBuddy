@@ -19,10 +19,12 @@ figma.ui.onmessage = (msg) => {
             figma.currentPage.selection = selection;
         }
         if (command === 'sideHeader') {
-            colSelect(selection, input, 0);
+            colSelect(selection, input, msg.direction);
+            // console.log(msg.direction);
         }
         if (command === 'topHeader') {
-            rowSelect(selection, input, 0);
+            rowSelect(selection, input, msg.direction);
+            console.log(msg.direction);
         }
     }
     if (msg.type === 'create-table') {

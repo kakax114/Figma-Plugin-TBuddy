@@ -9,6 +9,7 @@ const App = () => {
     const [returnArray, setReturnArray] = useState([]);
     const [command, setCommand] = useState('');
     const [direction, setDirection] = useState(0);
+    const [textMode, setTextMode] = useState(false);
 
     useEffect(() => {
         // This is how we read messages sent from the plugin controller
@@ -63,10 +64,12 @@ const App = () => {
         );
     };
 
-    const handleCommand = (input, move) => {
+    const handleCommand = (input, move, selectText) => {
         setCommand(input);
         //setdirect is direction plus move
         setDirection(move);
+        //settextmode is true
+        setTextMode(selectText);
 
         parent.postMessage(
             {
@@ -74,19 +77,12 @@ const App = () => {
                     type: 'command',
                     command: input,
                     direction: move,
+                    textMode: selectText,
                 },
             },
             '*'
         );
     };
-
-    // const getHeaders = () => {
-    //     const temp = [];
-    //     returnArray.map((item) => {
-    //         temp.push(item[0]);
-    //     });
-    //     return temp;
-    // };
 
     return (
         <div>
@@ -123,22 +119,33 @@ const App = () => {
             <br />
             Select:
             <br />
-            <button onClick={() => handleCommand('all', 0)}>All cells</button>
-            <button onClick={() => handleCommand('topHeader', 0)}>Top Header</button>
-            <button onClick={() => handleCommand('sideHeader', 0)}>Side Header</button>
+            <button onClick={() => handleCommand('all', 0, textMode)}>All cells</button>
+            <button onClick={() => handleCommand('topHeader', 0, textMode)}>Top Header</button>
+            <button onClick={() => handleCommand('sideHeader', 0, textMode)}>Side Header</button>
             {/* if command is topheader, render button up and down */}
             <br />
             {command === 'topHeader' && (
                 <>
-                    <button onClick={() => handleCommand(command, direction - 1)}>Up</button>
-                    <button onClick={() => handleCommand(command, direction + 1)}>Down</button>
+                    <button onClick={() => handleCommand(command, direction - 1, textMode)}>Up</button>
+                    <button onClick={() => handleCommand(command, direction + 1, textMode)}>Down</button>
                 </>
             )}
             {/* if command is sideheader, render button left and right */}
             {command === 'sideHeader' && (
                 <>
-                    <button onClick={() => handleCommand(command, direction - 1)}>Left</button>
-                    <button onClick={() => handleCommand(command, direction + 1)}>Right</button>
+                    <button onClick={() => handleCommand(command, direction - 1, textMode)}>Left</button>
+                    <button onClick={() => handleCommand(command, direction + 1, textMode)}>Right</button>
+                </>
+            )}
+            {/* if command is either all, topHeader, sideHeader, show checkbox set select text to true*/}
+            {(command === 'all' || command === 'topHeader' || command === 'sideHeader') && (
+                <>
+                    <input
+                        type="checkbox"
+                        checked={textMode}
+                        onChange={() => handleCommand(command, direction, !textMode)}
+                    />
+                    <label>Select text</label>
                 </>
             )}
         </div>

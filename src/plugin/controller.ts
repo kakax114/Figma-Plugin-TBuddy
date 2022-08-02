@@ -14,23 +14,33 @@ figma.ui.onmessage = (msg) => {
     if (msg.type === 'command') {
         command = msg.command;
         console.log(command);
+        console.log(msg.textMode);
+
         const selection = figma.currentPage.findAll((node) => node.name === 'Cell');
         if (command === 'all') {
             figma.currentPage.selection = selection;
+            if (msg.textMode) {
+                figma.currentPage.selection = selectText(selection);
+            }
         }
         if (command === 'sideHeader') {
-            colSelect(selection, input, msg.direction);
-            // console.log(msg.direction);
+            const nodes = colSelect(selection, input, msg.direction);
+            figma.currentPage.selection = nodes;
+            if (msg.textMode) {
+                figma.currentPage.selection = selectText(nodes);
+            }
         }
         if (command === 'topHeader') {
-            rowSelect(selection, input, msg.direction);
-            console.log(msg.direction);
+            figma.currentPage.selection = rowSelect(selection, input, msg.direction);
+            if (msg.textMode) {
+                figma.currentPage.selection = selectText(nodes);
+            }
         }
     }
     if (msg.type === 'create-table') {
         //listening on 'Create Table' button pressed
 
-        input = msg.items;
+        // input = msg.items;
         message = msg;
         const arr = [];
 
@@ -60,8 +70,22 @@ const colSelect = (selection, input, number) => {
             select.push(selection[number + i * input[number].length]);
         }
     }
-    figma.currentPage.selection = select;
+    return select;
+    // figma.currentPage.selection = select;
+    // console.log(select[0]);
     // figma.viewport.scrollAndZoomIntoView(select)
+};
+
+const selectText = (nodes) => {
+    const text = [];
+    nodes.forEach((node) => {
+        node.findChildren((child) => {
+            if (child.type === 'TEXT') {
+                text.push(child);
+            }
+        }, true);
+    });
+    return text;
 };
 
 const rowSelect = (selection, input, number) => {
@@ -77,8 +101,9 @@ const rowSelect = (selection, input, number) => {
             select.push(selection[number * base + i]);
         }
     }
-
-    figma.currentPage.selection = select;
+    return select;
+    // console.log(select[0].children);
+    // figma.currentPage.selection = select;
     // figma.viewport.scrollAndZoomIntoView(select)
 };
 

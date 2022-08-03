@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from 'react';
-// import '../styles/ui.css';
+import Toggle from './Toggle';
+import '../styles/ui.css';
+import Mock from './mock';
 
 const App = () => {
     const [inputText, setInputText] = useState('');
     const [items, setItems] = useState([]);
     const [radioState, setRadioState] = useState('tableByColumn');
-    //returnArray usestate
     const [returnArray, setReturnArray] = useState([]);
     const [command, setCommand] = useState('');
     const [direction, setDirection] = useState(0);
@@ -85,70 +86,80 @@ const App = () => {
     };
 
     return (
-        <div>
-            {/* <img src={require('../assets/logo.svg')} /> */}
-            <h2>Hello World</h2>
-            <textarea value={inputText} onChange={(e) => setInputText(e.target.value)} />
-            {/* radio button of 2 options, tabeByRow and tableByColumn, default selected to tableByRow */}
-            <div>
-                <input
-                    type="radio"
-                    name="radio"
-                    value="tableByRow"
-                    checked={radioState === 'tableByRow'}
-                    onChange={() => {
-                        tableByRow();
-                        setRadioState('tableByRow');
-                    }}
-                />
-                <label>Autolayout by Row</label>
-                <input
-                    type="radio"
-                    name="radio"
-                    value="tableByColumn"
-                    checked={radioState === 'tableByColumn'}
-                    onChange={() => {
-                        tableByColumn();
-                        setRadioState('tableByColumn');
-                    }}
-                />
-                <label>by Column</label>
-            </div>
-            <button onClick={onTable}>Create table</button>
-            {/* button set command to all */}
-            <br />
-            Select:
-            <br />
-            <button onClick={() => handleCommand('all', 0, textMode)}>All cells</button>
-            <button onClick={() => handleCommand('topHeader', 0, textMode)}>Top Header</button>
-            <button onClick={() => handleCommand('sideHeader', 0, textMode)}>Side Header</button>
-            {/* if command is topheader, render button up and down */}
-            <br />
-            {command === 'topHeader' && (
-                <>
-                    <button onClick={() => handleCommand(command, direction - 1, textMode)}>Up</button>
-                    <button onClick={() => handleCommand(command, direction + 1, textMode)}>Down</button>
-                </>
-            )}
-            {/* if command is sideheader, render button left and right */}
-            {command === 'sideHeader' && (
-                <>
-                    <button onClick={() => handleCommand(command, direction - 1, textMode)}>Left</button>
-                    <button onClick={() => handleCommand(command, direction + 1, textMode)}>Right</button>
-                </>
-            )}
-            {/* if command is either all, topHeader, sideHeader, show checkbox set select text to true*/}
-            {(command === 'all' || command === 'topHeader' || command === 'sideHeader') && (
-                <>
-                    <input
-                        type="checkbox"
-                        checked={textMode}
-                        onChange={() => handleCommand(command, direction, !textMode)}
-                    />
-                    <label>Select text</label>
-                </>
-            )}
-        </div>
+        <>
+            <Mock />
+        </>
+        // <div>
+        //     {/* <img src={require('../assets/logo.svg')} /> */}
+
+        //     <p>Hello World</p>
+        //     <textarea value={inputText} onChange={(e) => setInputText(e.target.value)} />
+        //     {/* radio button of 2 options, tabeByRow and tableByColumn, default selected to tableByRow */}
+        //     <div>
+        //         <input
+        //             type="radio"
+        //             name="radio"
+        //             value="tableByRow"
+        //             checked={radioState === 'tableByRow'}
+        //             onChange={() => {
+        //                 tableByRow();
+        //                 setRadioState('tableByRow');
+        //             }}
+        //         />
+        //         <label>Autolayout by Row</label>
+        //         <input
+        //             type="radio"
+        //             name="radio"
+        //             value="tableByColumn"
+        //             checked={radioState === 'tableByColumn'}
+        //             onChange={() => {
+        //                 tableByColumn();
+        //                 setRadioState('tableByColumn');
+        //             }}
+        //         />
+        //         <label>by Column</label>
+        //     </div>
+        //     <button onClick={onTable}>Create table</button>
+        //     {/* button set command to all */}
+        //     <br />
+        //     Select:
+        //     <br />
+        //     <button onClick={() => handleCommand('all', 0, textMode)}>All cells</button>
+        //     <button onClick={() => handleCommand('topHeader', 0, textMode)}>Top Header</button>
+        //     <button onClick={() => handleCommand('sideHeader', 0, textMode)}>Side Header</button>
+        //     {/* if command is topheader, render button up and down */}
+        //     <br />
+        //     {command === 'topHeader' && (
+        //         <>
+        //             <button onClick={() => handleCommand(command, direction - 1, textMode)}>Up</button>
+        //             <button onClick={() => handleCommand(command, direction + 1, textMode)}>Down</button>
+        //         </>
+        //     )}
+        //     {/* if command is sideheader, render button left and right */}
+        //     {command === 'sideHeader' && (
+        //         <>
+        //             <button onClick={() => handleCommand(command, direction - 1, textMode)}>Left</button>
+        //             <button onClick={() => handleCommand(command, direction + 1, textMode)}>Right</button>
+        //         </>
+        //     )}
+        //     {/* if command is either all, topHeader, sideHeader, show checkbox set select text to true*/}
+        //     {(command === 'all' || command === 'topHeader' || command === 'sideHeader') && (
+        //         <>
+        //             {/* <input
+        //                 type="checkbox"
+        //                 checked={textMode}
+        //                 onChange={() => handleCommand(command, direction, !textMode)}
+        //             />
+        //             <label>Select text</label> */}
+        //             <Toggle
+        //                 checked={textMode}
+        //                 onChange={() => handleCommand(command, direction, !textMode)}
+        //                 label="Select text"
+        //             />
+
+        //         </>
+        //     )}
+        // </div>
     );
 };
 

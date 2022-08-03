@@ -1,4 +1,4 @@
-figma.showUI(__html__);
+figma.showUI(__html__, {width: 277, height: 503});
 
 //global variables
 var message = null;
@@ -31,7 +31,8 @@ figma.ui.onmessage = (msg) => {
             }
         }
         if (command === 'topHeader') {
-            figma.currentPage.selection = rowSelect(selection, input, msg.direction);
+            const nodes = rowSelect(selection, input, msg.direction);
+            figma.currentPage.selection = nodes;
             if (msg.textMode) {
                 figma.currentPage.selection = selectText(nodes);
             }
@@ -71,9 +72,6 @@ const colSelect = (selection, input, number) => {
         }
     }
     return select;
-    // figma.currentPage.selection = select;
-    // console.log(select[0]);
-    // figma.viewport.scrollAndZoomIntoView(select)
 };
 
 const selectText = (nodes) => {
@@ -102,9 +100,6 @@ const rowSelect = (selection, input, number) => {
         }
     }
     return select;
-    // console.log(select[0].children);
-    // figma.currentPage.selection = select;
-    // figma.viewport.scrollAndZoomIntoView(select)
 };
 
 const autoByCol = (input, arr) => {

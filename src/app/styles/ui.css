@@ -1,33 +1,247 @@
+/* primary color varibale #1D5EFF  */
+:root {
+    --primary-blue: rgb(29, 94, 255);
+    --accent-grey: rgb(196, 195, 198);
+    /* --background-color: rgb(35, 36, 42); */
+    --background-color: rgb(44, 43, 44);
+    --text-bright: rgb(255, 255, 255);
+    --mute-grey: rgb(102, 108, 115);
+    --mid-grey: rgb(50, 55, 65);
+    --shadow-dark: rgb(28, 29, 33);
+    --radius: 9px;
+    --icon-size: 20px;
+    --font: 12px 'Roboto', sans-serif;
+}
+
+/* sectiontitle is flex, item inside is left align */
+.sectiontitle {
+    display: flex;
+    align-items: left;
+    width: 100%;
+}
+
+/* reset all paragraph margin to 0 */
+p {
+    margin: 0;
+}
+
+div {
+    padding: 0;
+    margin: 0;
+}
+
 body {
-    font: 12px sans-serif;
-    text-align: center;
-    margin: 20px;
+    background-color: var(--background-color);
+    color: var(--text-bright);
+    /* font: var(--font); */
+    line-height: 1.5;
+    margin: 0;
+    padding: 0;
 }
-button {
-    border-radius: 5px;
-    background: white;
-    color: black;
-    border: none;
-    padding: 8px 15px;
-    margin: 0 5px;
-    box-shadow: inset 0 0 0 1px black;
-    outline: none;
+
+/* container, width stretch,  flex column, padding 10px, 20px, align items inside to center  */
+.container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 9px 16px;
+    justify-content: space-between;
 }
-#create {
-    box-shadow: none;
-    background: #18a0fb;
-    color: white;
+
+/* icon is a 16x16 solid circle, grey */
+.icon {
+    display: flex;
+    width: var(--icon-size);
+    height: var(--icon-size);
+    /* border-radius: 50%; */
+    align-items: center;
+    justify-content: center;
 }
+
+/* tab is flex, horizontal layout, space betweem items inside */
+.tab {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    padding: 7px 7px;
+    background-color: var(--mid-grey);
+    border-radius: var(--radius);
+    margin: 2.5px;
+    justify-content: center;
+    gap: 12px;
+    /* add soft shadow */
+    /* box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75); */
+}
+
+.tab-inactive {
+    background-color: transparent;
+}
+
+.tab-inactive:hover {
+    background-color: var(--mid-grey);
+    /* add soft shadow */
+    /* box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75); */
+}
+
+.tab-inactive > .icon > svg {
+    fill: var(--mute-grey);
+}
+
+.tab-inactive > .label {
+    color: var(--mute-grey);
+}
+
+.tabs {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    /* have a boarder around it, color mid-grey */
+    /* border: 1px solid var(--mid-grey); */
+    border-radius: var(--radius);
+    background-color: var(--shadow-dark);
+}
+
 textarea {
-    padding: 8px;
-    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    height: 75px;
+    border-radius: var(--radius);
+    background-color: var(--mid-grey);
+    color: var(--text-bright);
+    font-size: 12px;
+    padding: 10px;
+    resize: none;
+    border: 1px solid var(--primary-blue);
 }
+
+textarea {
+    /* font: var(--font) */
+    color: var(--accent-grey);
+}
+
+textarea::placeholder {
+    color: var(--mute-grey);
+    font: var(--font);
+}
+
 textarea:focus {
-    box-shadow: inset 0 0 0 2px #18a0fb;
+    outline: none !important;
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0px 4.5px rgb(29 94 255 / 40%);
+    /* rgb(29, 94, 255) */
 }
-#create:focus {
-    box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.3);
+
+/* hide textarea scollbar */
+textarea::-webkit-scrollbar {
+    width: 0 px;
+    background: transparent;
 }
-textarea:focus {
-    box-shadow: inset 0 0 0 2px #18a0fb;
+
+/* button is flex, width strech, item inside is align center horizontal and vertically */
+.button {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 13px 0px;
+    background-color: var(--primary-blue);
+    border-radius: var(--radius);
+    /* cursor is pointer */
+    cursor: pointer;
+}
+
+.label {
+    color: var(--text-bright);
+    font: var(--font);
+    /* font-family: 'Roboto'; */
+    /* font-style: normal; */
+    font-size: 13px;
+    font-weight: 500;
+    /* src: local('Roboto'), local('Roboto-Regular'), url(https://fonts.gstatic.com/s/roboto/v18/KFOmCnqEu92Fr1Mu4mxKKTU1Kg.woff2) format('woff2'); */
+    /* unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; */
+}
+
+.secTitle {
+    color: var(--accent-grey);
+}
+
+/* border color mid-grey */
+.divider {
+    border: 1px solid var(--mid-grey);
+}
+
+/* options is flex, vertical layout, items inside align to left */
+.options {
+    display: flex;
+    flex-direction: column;
+    /* align-items: left; */
+    width: 100%;
+    gap: 16px;
+}
+
+/* indicator is a 3px thick blue block */
+.indicator {
+    width: 3px;
+    height: 18px;
+    background-color: var(--primary-blue);
+    border-radius: 3px;
+}
+
+svg {
+    width: 85%;
+    height: 85%;
+    fill: var(--accent-grey);
+}
+
+/* option is a 1x3 grid, gap 10px, all items left align */
+.option {
+    display: grid;
+    grid-template-columns: 0fr 1fr;
+    grid-gap: 14px;
+    align-items: center;
+    width: 100%;
+}
+
+.option-inactive > .indicator {
+    background-color: var(--background-color);
+}
+
+.option-inactive > .label {
+    color: var(--mute-grey);
+}
+
+.option-inactive > .icon > svg {
+    /* background-color: var(--mute-grey); */
+    fill: var(--mute-grey);
+}
+
+/* wraper is flex, horizontal layout */
+.wraper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 6px;
+}
+
+/* .toggle is flex, horizontal layout */
+.toggle {
+    display: flex;
+    width: 35px;
+    background-color: var(--primary-blue);
+    height: 16px;
+    border-radius: 42px;
+    flex-direction: row;
+    align-items: center;
+    padding: 3px;
+}
+
+.toggle-button {
+    width: 15px;
+    height: 15px;
+    background-color: white;
+    border-radius: 51%;
 }

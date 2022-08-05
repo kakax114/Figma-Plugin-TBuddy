@@ -17,7 +17,7 @@
 .sectiontitle {
     display: flex;
     align-items: left;
-    width: 100%;
+    /* width: 100%; */
 }
 
 /* reset all paragraph margin to 0 */
@@ -26,6 +26,11 @@ p {
 }
 
 div {
+    padding: 0;
+    margin: 0;
+}
+
+input {
     padding: 0;
     margin: 0;
 }
@@ -70,6 +75,7 @@ body {
     margin: 2.5px;
     justify-content: center;
     gap: 12px;
+    cursor: pointer;
     /* add soft shadow */
     /* box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75); */
 }
@@ -79,7 +85,9 @@ body {
 }
 
 .tab-inactive:hover {
-    background-color: var(--mid-grey);
+    /* background color use --mid-grey with 20% opacity */
+    background-color: rgba(50, 55, 65, 0.5);
+    /* background-color: var(--mid-grey); */
     /* add soft shadow */
     /* box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75); */
 }
@@ -203,6 +211,7 @@ svg {
     grid-gap: 14px;
     align-items: center;
     width: 100%;
+    cursor: pointer;
 }
 
 .option-inactive > .indicator {

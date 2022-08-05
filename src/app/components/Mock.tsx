@@ -11,11 +11,13 @@ export default function Mock() {
                 </div>
             </div>
             <div className="container">
+                {/* textarea */}
                 <textarea placeholder="Paste CSV, Excel here..." />
             </div>
 
             <div className="container">
                 <div className="tabs">
+                    {/* input 1 */}
                     <div className="tab">
                         <div className="icon">
                             <svg
@@ -30,6 +32,7 @@ export default function Mock() {
                         </div>
                         <p className="label">Column</p>
                     </div>
+                    {/* input 2 */}
                     <div className="tab tab-inactive">
                         <div className="icon">
                             <svg
@@ -47,6 +50,7 @@ export default function Mock() {
                 </div>
             </div>
             <div className="container">
+                {/* button create table */}
                 <div className="button">
                     <p className="label">Create table</p>
                 </div>
@@ -59,6 +63,7 @@ export default function Mock() {
             </div>
             <div className="container">
                 <div className="options">
+                    {/* option all */}
                     <div className="option option-inactive">
                         <div className="icon">
                             <svg
@@ -73,6 +78,7 @@ export default function Mock() {
                         </div>
                         <p className="label">All cells</p>
                     </div>
+                    {/* option top header */}
                     <div className="option">
                         <div className="icon">
                             <svg
@@ -87,6 +93,7 @@ export default function Mock() {
                         </div>
                         <p className="label">Top header</p>
                     </div>
+                    {/* option side header */}
                     <div className="option option-inactive">
                         <div className="icon">
                             <svg

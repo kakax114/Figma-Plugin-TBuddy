@@ -1,4 +1,4 @@
-figma.showUI(__html__, {width: 277, height: 503});
+figma.showUI(__html__, {width: 277, height: 475});
 
 //global variables
 var message = null;
@@ -41,7 +41,7 @@ figma.ui.onmessage = (msg) => {
     if (msg.type === 'create-table') {
         //listening on 'Create Table' button pressed
 
-        // input = msg.items;
+        input = msg.items;
         message = msg;
         const arr = [];
 

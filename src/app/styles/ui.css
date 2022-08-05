@@ -14,11 +14,6 @@
 }
 
 /* sectiontitle is flex, item inside is left align */
-.sectiontitle {
-    display: flex;
-    align-items: left;
-    /* width: 100%; */
-}
 
 /* reset all paragraph margin to 0 */
 p {
@@ -51,6 +46,28 @@ body {
     align-items: center;
     padding: 9px 16px;
     justify-content: space-between;
+}
+
+.sectiontitle {
+    display: flex;
+    align-items: left;
+
+    /* width: 100%; */
+}
+
+.label {
+    color: var(--text-bright);
+    font: var(--font);
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.label-inactive {
+    color: var(--mute-grey);
+}
+
+.sectiontitle > .label {
+    font-weight: 600;
 }
 
 /* icon is a 16x16 solid circle, grey */
@@ -161,17 +178,6 @@ textarea::-webkit-scrollbar {
     cursor: pointer;
 }
 
-.label {
-    color: var(--text-bright);
-    font: var(--font);
-    /* font-family: 'Roboto'; */
-    /* font-style: normal; */
-    font-size: 13px;
-    font-weight: 500;
-    /* src: local('Roboto'), local('Roboto-Regular'), url(https://fonts.gstatic.com/s/roboto/v18/KFOmCnqEu92Fr1Mu4mxKKTU1Kg.woff2) format('woff2'); */
-    /* unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; */
-}
-
 .secTitle {
     color: var(--accent-grey);
 }
@@ -225,6 +231,14 @@ svg {
 .option-inactive > .icon > svg {
     /* background-color: var(--mute-grey); */
     fill: var(--mute-grey);
+}
+
+.option-inactive:hover > .label {
+    color: var(--accent-grey);
+}
+
+.option-inactive:hover > .icon > svg {
+    fill: var(--accent-grey);
 }
 
 /* wraper is flex, horizontal layout */

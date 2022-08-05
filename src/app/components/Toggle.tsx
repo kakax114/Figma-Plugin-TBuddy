@@ -6,9 +6,6 @@ import '../styles/Toggle.css';
 export default function Toggle(props) {
     return (
         <div>
-            {/* <input type="checkbox" checked={props.checked} onChange={props.onChange} /> */}
-            <label>{props.label}</label>
-
             <div className="switch">
                 <div className="switch__1">
                     <input id="switch-1" type="checkbox" checked={props.checked} onChange={props.onChange} />

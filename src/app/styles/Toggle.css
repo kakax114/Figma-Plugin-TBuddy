@@ -1,19 +1,19 @@
 :root {
-    --primary-light: #8abdff;
-    --primary: #6d5dfc;
-    --primary-dark: #5b0eeb;
-    --white: #fff;
-    --greyLight-1: #e4ebf5;
-    --greyLight-2: #c8d0e7;
-    --greyLight-3: #bec8e4;
-    --greyDark: #9baacf;
+    --primary-blue: rgb(29, 94, 255);
+    --accent-grey: rgb(196, 195, 198);
+    --background-color: rgb(44, 43, 44);
+    --text-bright: rgb(255, 255, 255);
+    --mute-grey: rgb(102, 108, 115);
+    --mid-grey: rgb(50, 55, 65);
+    --shadow-dark: rgb(28, 29, 33);
+    --radius: 9px;
+    --icon-size: 20px;
+    --font: 12px 'Roboto', sans-serif;
 }
-
 .switch {
     grid-column: 1 / 2;
     display: grid;
     grid-template-columns: repeat(2, min-content);
-    grid-gap: 3rem;
     justify-self: center;
     /*  CHECKBOX  */
 }
@@ -22,16 +22,15 @@
 }
 .switch__1,
 .switch__2 {
-    width: 6rem;
+    width: 30px;
 }
 .switch__1 label,
 .switch__2 label {
     display: flex;
     align-items: center;
     width: 100%;
-    height: 3rem;
-    box-shadow: 0.3rem 0.3rem 0.6rem var(--greyLight-2), -0.2rem -0.2rem 0.5rem var(--white);
-    background: rgba(255, 255, 255, 0);
+    height: 15px;
+    background-color: var(--shadow-dark);
     position: relative;
     cursor: pointer;
     border-radius: 1.6rem;
@@ -40,12 +39,12 @@
 .switch__2 label::after {
     content: '';
     position: absolute;
-    left: 0.4rem;
-    width: 2.1rem;
-    height: 2.1rem;
+    left: 3px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
-    background: var(--greyDark);
-    transition: all 0.4s ease;
+    background: var(--text-bright);
+    transition: all 0.2s ease;
 }
 .switch__1 label::before,
 .switch__2 label::before {
@@ -53,22 +52,21 @@
     width: 100%;
     height: 100%;
     border-radius: inherit;
-    background: linear-gradient(330deg, var(--primary-dark) 0%, var(--primary) 50%, var(--primary-light) 100%);
+    background-color: var(--primary-blue);
     opacity: 0;
-    transition: all 0.4s ease;
+    transition: all 0.2s ease;
 }
 .switch input:checked ~ label::before {
     opacity: 1;
 }
 .switch input:checked ~ label::after {
-    left: 57%;
-    background: var(--greyLight-1);
+    left: 59%;
+    background-color: vars(--primary-blue);
 }
 .checkbox {
     grid-column: 1 / 2;
     display: grid;
     grid-template-columns: repeat(2, 6rem);
-    grid-gap: 3rem;
     justify-content: center;
 }
 .checkbox input {
@@ -82,7 +80,6 @@
 }
 .checkbox__1 label,
 .checkbox__2 label {
-    box-shadow: 0.3rem 0.3rem 0.6rem var(--greyLight-2), -0.2rem -0.2rem 0.5rem var(--white);
     cursor: pointer;
     position: relative;
     display: flex;
@@ -94,20 +91,12 @@
 }
 .checkbox__1 label:hover i,
 .checkbox__2 label:hover i {
-    color: var(--primary);
+    color: var(--primary-blue);
 }
 .checkbox__1 label i,
 .checkbox__2 label i {
     font-size: 1.8rem;
     font-weight: 700;
-    color: var(--greyDark);
-    transition: 0.3s ease;
-}
-.checkbox__1 input:checked ~ label,
-.checkbox__2 input:checked ~ label {
-    box-shadow: inset 0.2rem 0.2rem 0.5rem var(--greyLight-2), inset -0.2rem -0.2rem 0.5rem var(--white);
-}
-.checkbox__1 input:checked ~ label i,
-.checkbox__2 input:checked ~ label i {
-    color: var(--primary);
+    color: var(--accent-grey);
+    transition: 0.1s ease;
 }

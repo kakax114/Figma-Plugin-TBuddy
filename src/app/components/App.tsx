@@ -11,6 +11,7 @@ const App = () => {
     const [command, setCommand] = useState('');
     const [direction, setDirection] = useState(0);
     const [textMode, setTextMode] = useState(false);
+    const [invertSelect, setInvertSelect] = useState(false);
 
     useEffect(() => {
         // This is how we read messages sent from the plugin controller
@@ -65,12 +66,13 @@ const App = () => {
         );
     };
 
-    const handleCommand = (input, move, selectText) => {
+    const handleCommand = (input, move, selectText, isInverted) => {
         setCommand(input);
         //setdirect is direction plus move
         setDirection(move);
         //settextmode is true
         setTextMode(selectText);
+        setInvertSelect(isInverted);
 
         parent.postMessage(
             {
@@ -79,6 +81,7 @@ const App = () => {
                     command: input,
                     direction: move,
                     textMode: selectText,
+                    invertSelect: isInverted,
                 },
             },
             '*'
@@ -161,12 +164,13 @@ const App = () => {
                 </div>
                 {(command === 'all' || command === 'topHeader' || command === 'sideHeader') && (
                     <div className="wraper">
-                        <input
-                            type="checkbox"
+                        {/* is textmode, class name is label, otherwise, class name is label label-inactive */}
+                        <p className={textMode ? 'label' : 'label label-inactive'}>Text mode</p>
+                        {/* <p className="label">Text mode</p> */}
+                        <Toggle
                             checked={textMode}
-                            onChange={() => handleCommand(command, direction, !textMode)}
+                            onChange={() => handleCommand(command, direction, !textMode, invertSelect)}
                         />
-                        <p className="label">Text mode</p>
                     </div>
                 )}
             </div>
@@ -174,14 +178,14 @@ const App = () => {
             {/* if returnarray is not empty show 1, otherwise show 2 */}
             {returnArray.length == 0 ? (
                 <div className="container">
-                    <p className="label">Options will be enabled after creating a table.</p>
+                    <p className="label label-inactive">Create your first table to enable options.</p>
                 </div>
             ) : (
                 <div className="container">
                     <div className="options">
                         <div
                             className={command === 'all' ? 'option' : 'option option-inactive'}
-                            onClick={() => handleCommand('all', 0, textMode)}
+                            onClick={() => handleCommand('all', 0, textMode, false)}
                         >
                             <div className="icon">
                                 <svg
@@ -199,7 +203,7 @@ const App = () => {
                         {/* option top header */}
                         <div
                             className={command === 'topHeader' ? 'option' : 'option option-inactive'}
-                            onClick={() => handleCommand('topHeader', 0, textMode)}
+                            onClick={() => handleCommand('topHeader', 0, textMode, false)}
                         >
                             <div className="icon">
                                 <svg
@@ -216,7 +220,7 @@ const App = () => {
                         </div>
                         <div
                             className={command === 'sideHeader' ? 'option' : 'option option-inactive'}
-                            onClick={() => handleCommand('sideHeader', 0, textMode)}
+                            onClick={() => handleCommand('sideHeader', 0, textMode, false)}
                         >
                             <div className="icon">
                                 <svg
@@ -240,7 +244,7 @@ const App = () => {
                     <div className="wraper">
                         <div
                             className="tab tab-inactive"
-                            onClick={() => handleCommand(command, direction - 1, textMode)}
+                            onClick={() => handleCommand(command, direction - 1, textMode, invertSelect)}
                         >
                             <div className="icon">
                                 <svg
@@ -256,7 +260,7 @@ const App = () => {
                         </div>
                         <div
                             className="tab tab-inactive"
-                            onClick={() => handleCommand(command, direction + 1, textMode)}
+                            onClick={() => handleCommand(command, direction + 1, textMode, invertSelect)}
                         >
                             <div className="icon">
                                 <svg
@@ -270,6 +274,8 @@ const App = () => {
                                 </svg>
                             </div>
                         </div>
+                        {/* button to call handle command by skiping all arguments */}
+                        {/* <button className="button" onClick={() => handleCommand(command, direction, textMode, true)}>invert select</button> */}
                     </div>
                 )}
                 {/* if command is sideheader, render button left and right */}
@@ -277,7 +283,7 @@ const App = () => {
                     <div className="wraper">
                         <div
                             className="tab tab-inactive"
-                            onClick={() => handleCommand(command, direction - 1, textMode)}
+                            onClick={() => handleCommand(command, direction - 1, textMode, invertSelect)}
                         >
                             <div className="icon">
                                 <svg
@@ -293,7 +299,7 @@ const App = () => {
                         </div>
                         <div
                             className="tab tab-inactive"
-                            onClick={() => handleCommand(command, direction + 1, textMode)}
+                            onClick={() => handleCommand(command, direction + 1, textMode, invertSelect)}
                         >
                             <div className="icon">
                                 <svg

@@ -9,6 +9,7 @@ var input = [
     [5, 6],
     [7, 8],
 ];
+var id = '';
 
 figma.ui.onmessage = (msg) => {
     if (msg.type === 'command') {
@@ -16,7 +17,8 @@ figma.ui.onmessage = (msg) => {
         console.log(command);
         console.log(msg.textMode);
 
-        const selection = figma.currentPage.findAll((node) => node.name === 'Cell');
+        const selection = allSelect();
+
         if (command === 'all') {
             figma.currentPage.selection = selection;
             if (msg.textMode) {
@@ -33,6 +35,12 @@ figma.ui.onmessage = (msg) => {
         if (command === 'topHeader') {
             const nodes = rowSelect(selection, input, msg.direction);
             figma.currentPage.selection = nodes;
+
+            // if (msg.invertSelect){
+            //     const selectionNotInNodes = selection.filter((node) => !nodes.includes(node));
+            //     figma.currentPage.selection = selectionNotInNodes;
+            // }
+
             if (msg.textMode) {
                 figma.currentPage.selection = selectText(nodes);
             }
@@ -42,6 +50,7 @@ figma.ui.onmessage = (msg) => {
         //listening on 'Create Table' button pressed
 
         input = msg.items;
+        id = randomId();
         message = msg;
         const arr = [];
 
@@ -58,6 +67,32 @@ figma.ui.onmessage = (msg) => {
     }
 };
 
+//select all children of Mainframe and return them in an array
+const allSelect = () => {
+    const selection = [];
+    const mainFrame = figma.currentPage.findAll((node) => node.name === 'Mainframe-' + id);
+    mainFrame[0].children.forEach((node) => {
+        node.children.forEach((child) => {
+            if ((child.name = 'Cell')) {
+                selection.push(child);
+            }
+        });
+    });
+    return selection;
+};
+
+const selectText = (nodes) => {
+    const text = [];
+    nodes.forEach((node) => {
+        node.findChildren((child) => {
+            if (child.type === 'TEXT') {
+                text.push(child);
+            }
+        }, true);
+    });
+    return text;
+};
+
 const colSelect = (selection, input, number) => {
     const select = [];
     if (message.state === 'tableByColumn') {
@@ -72,18 +107,6 @@ const colSelect = (selection, input, number) => {
         }
     }
     return select;
-};
-
-const selectText = (nodes) => {
-    const text = [];
-    nodes.forEach((node) => {
-        node.findChildren((child) => {
-            if (child.type === 'TEXT') {
-                text.push(child);
-            }
-        }, true);
-    });
-    return text;
 };
 
 const rowSelect = (selection, input, number) => {
@@ -109,7 +132,7 @@ const autoByCol = (input, arr) => {
     getCol(input, arr).forEach((col) => {
         mainFrame.appendChild(col);
     });
-    mainFrame.name = 'Mainframe';
+    mainFrame.name = 'Mainframe-' + id;
 };
 
 const getCol = (input, col) => {
@@ -162,7 +185,7 @@ const autoByRow = (input, arr) => {
     getRow(input, arr).forEach((row) => {
         mainFrame.appendChild(row);
     });
-    mainFrame.name = 'Mainframe';
+    mainFrame.name = 'Mainframe-' + id;
 };
 
 // return a list with frames
@@ -188,6 +211,11 @@ const getColFirst = (arr) => {
         frame.counterAxisSizingMode = 'AUTO';
     });
     return frame;
+};
+
+//function to generate a random id
+const randomId = () => {
+    return Math.random().toString(36).substr(5, 5);
 };
 
 // figma.closePlugin();

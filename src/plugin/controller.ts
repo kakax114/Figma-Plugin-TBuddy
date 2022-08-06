@@ -24,6 +24,10 @@ figma.ui.onmessage = (msg) => {
             if (msg.textMode) {
                 figma.currentPage.selection = selectText(selection);
             }
+            // const temp = figma.currentPage.findAll((node) => node.name === '--table0--');
+            // temp.forEach((node) => {
+            //     node.characters = '';
+            // }
         }
         if (command === 'sideHeader') {
             const nodes = colSelect(selection, input, msg.direction);
@@ -55,9 +59,22 @@ figma.ui.onmessage = (msg) => {
         const arr = [];
 
         if (message.state === 'tableByRow') {
-            autoByRow(input, arr);
+            //use callback to run remove value after creating table with temp value
+            autoByRow(
+                () => {
+                    removeTempValueOnEmptyTextCell();
+                },
+                input,
+                arr
+            );
         } else if (message.state === 'tableByColumn') {
-            autoByCol(input, arr);
+            autoByCol(
+                () => {
+                    removeTempValueOnEmptyTextCell();
+                },
+                input,
+                arr
+            );
         }
 
         figma.ui.postMessage({
@@ -70,7 +87,7 @@ figma.ui.onmessage = (msg) => {
 //select all children of Mainframe and return them in an array
 const allSelect = () => {
     const selection = [];
-    const mainFrame = figma.currentPage.findAll((node) => node.name === 'Mainframe-' + id);
+    const mainFrame = figma.currentPage.findAll((node) => node.name === 'TBuddy-' + id);
     mainFrame[0].children.forEach((node) => {
         node.children.forEach((child) => {
             if ((child.name = 'Cell')) {
@@ -125,14 +142,15 @@ const rowSelect = (selection, input, number) => {
     return select;
 };
 
-const autoByCol = (input, arr) => {
+const autoByCol = (callback, input, arr) => {
     const mainFrame = figma.createFrame();
     mainFrame.layoutMode = 'HORIZONTAL';
     mainFrame.counterAxisSizingMode = 'AUTO';
     getCol(input, arr).forEach((col) => {
         mainFrame.appendChild(col);
     });
-    mainFrame.name = 'Mainframe-' + id;
+    mainFrame.name = 'TBuddy-' + id;
+    setTimeout(callback, 500);
 };
 
 const getCol = (input, col) => {
@@ -158,12 +176,25 @@ const getRowFirst = (arr) => {
     return frame;
 };
 
+const removeTempValueOnEmptyTextCell = () => {
+    //use as callback so the search findAll will work.
+    const nodes = figma.currentPage.findAll((node) => node.name === '--table0--');
+    nodes.forEach((node) => {
+        node.characters = ' ';
+        node.name = 'Text';
+    });
+};
+
 const getText = async (i) => {
     const cell = figma.createFrame();
     cell.name = 'Cell';
     const text = figma.createText();
     await figma.loadFontAsync(text.fontName);
     text.characters = i.toString();
+    if (text.characters === '') {
+        text.characters = '-';
+        text.name = '--table0--';
+    }
     cell.appendChild(text);
     cell.layoutMode = 'HORIZONTAL';
     if (message.state === 'tableByColumn') {
@@ -178,14 +209,15 @@ const getText = async (i) => {
     return cell;
 };
 
-const autoByRow = (input, arr) => {
+const autoByRow = (callback, input, arr) => {
     const mainFrame = figma.createFrame();
     mainFrame.layoutMode = 'VERTICAL';
     mainFrame.counterAxisSizingMode = 'AUTO';
     getRow(input, arr).forEach((row) => {
         mainFrame.appendChild(row);
     });
-    mainFrame.name = 'Mainframe-' + id;
+    mainFrame.name = 'TBuddy-' + id;
+    setTimeout(callback, 500);
 };
 
 // return a list with frames

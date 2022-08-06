@@ -32,12 +32,20 @@ const App = () => {
         }
     }, [inputText]);
 
+    const extractTable = () => {
+        const table = inputText.split('\n').map((item) => {
+            const temp = item.split('\t');
+            return temp;
+        });
+        return table;
+    };
+
     const tableByRow = () => {
-        setItems(inputText.split('\n').map((item) => item.split('\t')));
+        setItems(extractTable());
     };
 
     const tableByColumn = () => {
-        setItems(transposeArray(inputText.split('\n').map((item) => item.split('\t'))));
+        setItems(transposeArray(extractTable()));
     };
 
     //function of tableByColumn

@@ -106,7 +106,7 @@ const App = () => {
             <div className="container">
                 {/* textarea */}
                 <textarea
-                    placeholder="Paste CSV, Excel here..."
+                    placeholder="Paste CSV, spreadsheet data here..."
                     value={inputText}
                     onChange={(e) => setInputText(e.target.value)}
                 />

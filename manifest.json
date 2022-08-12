@@ -1,6 +1,6 @@
 {
-  "name": "T-Buddy",
-  "id": "00000000",
+  "name": "Quick table",
+  "id": "1137823695947414493",
   "api": "1.0.0",
   "main": "dist/code.js",
   "ui": "dist/ui.html",

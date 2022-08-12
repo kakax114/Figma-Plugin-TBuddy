@@ -87,7 +87,7 @@ figma.ui.onmessage = (msg) => {
 //select all children of Mainframe and return them in an array
 const allSelect = () => {
     const selection = [];
-    const mainFrame = figma.currentPage.findAll((node) => node.name === 'TBuddy-' + id);
+    const mainFrame = figma.currentPage.findAll((node) => node.name === 'QT-' + id);
     mainFrame[0].children.forEach((node) => {
         node.children.forEach((child) => {
             if ((child.name = 'Cell')) {
@@ -127,11 +127,12 @@ const colSelect = (selection, input, number) => {
 };
 
 const rowSelect = (selection, input, number) => {
+    console.log(selection);
     const select = [];
     if (message.state === 'tableByColumn') {
         const base = input.length;
         for (let i = 0; i < base; i++) {
-            select.push(selection[number + i * input[number].length]);
+            select.push(selection[number + i * input[0].length]);
         }
     } else if (message.state === 'tableByRow') {
         const base = input[number].length;
@@ -149,7 +150,7 @@ const autoByCol = (callback, input, arr) => {
     getCol(input, arr).forEach((col) => {
         mainFrame.appendChild(col);
     });
-    mainFrame.name = 'TBuddy-' + id;
+    mainFrame.name = 'QT-' + id;
     setTimeout(callback, 500);
 };
 
@@ -216,7 +217,7 @@ const autoByRow = (callback, input, arr) => {
     getRow(input, arr).forEach((row) => {
         mainFrame.appendChild(row);
     });
-    mainFrame.name = 'TBuddy-' + id;
+    mainFrame.name = 'QT-' + id;
     setTimeout(callback, 500);
 };
 
